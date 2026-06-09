@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: .
+    container_name: backend_app
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: "mongodb://mongo:27017/mydb"
+    depends_on:
+      - mongo
+    env_file:
+      - .env
+    volumes:
+      - /var/www/videos:/var/www/videos
+      - /var/www/temp:/var/www/temp
+
+  mongo:
+    image: mongo:7.0
+    container_name: mongo_db
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: mydb
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
